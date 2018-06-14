@@ -1,0 +1,147 @@
+﻿@model PaginatedList<Server.Models.DatapackModel>
+
+@{
+	ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<hr />
+<form asp-action="Index" method="get" class="row">
+	<div class="col s5 input-field">
+		<select name="SortBy" id="SortBy">
+			@{
+				string selected = (string)ViewData["SortBy"];
+			}
+			@if (selected == "AZ")
+			{ <option value="AZ" selected>A-Z</option> }
+			else
+			{ <option value="AZ">A-Z</option> }
+			@if (selected == "Votes")
+			{ <option value="Votes" selected>Votes</option> }
+			else
+			{ <option value="Votes">Votes</option> }
+			@if (selected == "Views")
+			{ <option value="Views" selected>Views</option> }
+			else
+			{ <option value="Views">Views</option> }
+			@if (selected == "Downloads")
+			{ <option value="Downloads" selected>Downloads</option> }
+			else
+			{ <option value="Downloads">Downloads</option> }
+			@if (selected == "None")
+			{ <option value="None" selected>None</option> }
+			else
+			{ <option value="None">None</option> }
+		</select>
+		<label>Sort By</label>
+	</div>
+	<input type="hidden" for="search" id="search" value="@ViewData["filter"]" />
+	<input type="hidden" for="page" id="page" value="@ViewData["page"]" />
+	<div class="col s3 input-field">
+		<p>
+			<label>
+				@{string checkboxAttribute = ""; if ((bool)ViewData["Descending"]) { checkboxAttribute = "checked=checked "; } }
+				<input type="checkbox" name="Descending" id="Descending" @checkboxAttribute/>
+				<span>Descending</span>
+			</label>
+		</p>
+	</div>
+	<div class="col s4">
+		<button type="submit" class="btn">Filter</button>
+	</div>
+</form>
+<hr />
+<ul class="pagination">
+	@if (Model.HasPreviousPage)
+	{
+		<li class="waves-effect">
+			<a asp-action="Index" asp-route-Descending="@ViewData["Descending"]" asp-route-SortBy="@ViewData["SortBy"]" asp-route-search="@ViewData["filter"]" asp-all-route-page="@Model.PreviousPage">
+				<i class="material-icons">chevron_left</i>
+			</a>
+		</li>
+	}
+	else
+	{
+		<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+	}
+
+	@{
+		var Amount = 10;
+		for (int i = -Amount; i <= Amount; i++)
+		{
+			int i3 = Model.PageIndex + i;
+			string Class = "waves-effect";
+			if (i == 0)
+			{
+				Class = "active";
+			}
+			if (Model.IsPage(i3))
+			{
+				<li class="@Class"><a asp-action="Index" asp-route-Descending="@ViewData["Descending"]" asp-route-SortBy="@ViewData["SortBy"]" asp-route-search="@ViewData["filter"]" asp-route-page="@i3">@i3</a></li>
+			}
+		}
+	}
+
+	@if (Model.HasNextPage)
+	{
+		<li class="waves-effect">
+			<a asp-action="Index" asp-route-Descending="@ViewData["Descending"]" asp-route-SortBy="@ViewData["SortBy"]" asp-route-search="@ViewData["filter"]" asp-all-route-page="@Model.NextPage">
+				<i class="material-icons">chevron_right</i>
+			</a>
+		</li>
+	}
+	else
+	{
+		<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+	}
+</ul>
+<hr />
+@for (int i = 0; i < Model.Count; i += 2)
+{
+	<div class="row">
+		@{ int i2 = 0; }
+		@while (i2 < 2)
+		{
+			if (i + i2 > Model.Count - 1)
+			{
+				break;
+			}
+			var datapack = Model[i + i2];
+			i2++;
+			<div class="col s12 m6">
+				<div class="card small sticky-action" style="overflow: visible;">
+					<div class="card-image waves-effect waves-block waves-light">
+						<!--<img class="activator" src="images/office.jpg"> an image, hmm-->
+					</div>
+					<div class="card-content">
+						<span><a asp-action="Details" asp-route-id="@datapack.Id" class="card-title grey-text text-darken-4">@datapack.Name<i class="material-icons right">more_vert</i></a></span>
+					</div>
+
+					<div class="card-content truncate">
+						@datapack.Description
+					</div>
+
+					<div class="card-action">
+						<div class="row">
+							<div class="col s4">
+								<a asp-action="Download" asp-route-id="@datapack.Id">Download</a>
+							</div>
+							<div class="col s3">
+								<span>Made by <a asp-controller="Account" asp-action="Profile" asp-route-id="@datapack.Author.Id">@datapack.Author.UserName</a></span>
+							</div>
+							<div class="col s4">
+								<div class="right">Votes: <span class="grey-text text-darken-3">@datapack.LikeDiff</span></div><br />
+								<div class="right">Views: <span class="grey-text text-darken-3">@datapack.Views</span></div><br />
+								<div class="right">Downloads: <span class="grey-text text-darken-3">@datapack.Downloads</span></div><br />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+}

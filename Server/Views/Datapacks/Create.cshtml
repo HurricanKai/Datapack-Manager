@@ -1,0 +1,40 @@
+﻿@model Server.Models.DatapackModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<div class="row">
+    <div class="col s12">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="red-text text-darken-2"></div>
+			<div class="input-field">
+				<label asp-for="Name"></label>
+				<input asp-for="Name"/>
+				<span asp-validation-for="Name" class="red-text text-darken-2"></span>
+			</div>
+			<div class="input-field">
+				<label asp-for="Description"></label>
+				@Html.TextAreaFor(x => x.Description, new { @class = "materialize-textarea" })
+				<span asp-validation-for="Description" class="red-text text-darken-2"></span>
+			</div>
+			<div class="input-field">
+				<label for="Tags">Seperate Tags with ", "</label>
+				<input name="Tags" id="Tags" type="text">
+			</div>
+			<div class="input-field">
+				<input type="submit" value="Create" class="waves-effect waves-light btn" />
+			</div>
+		</form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,62 @@
+﻿@model Server.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<div class="row">
+    <div class="col-md-4">
+		<form asp-action="Register">
+			<div asp-validation-summary="ModelOnly" class="red-text"></div>
+			<div class="row">
+				<div class="col s12 input-field">
+					<label asp-for="Name"></label>
+					<input asp-for="Name" class="validate" />
+					<span asp-validation-for="Name" class="red-text"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 input-field">
+					<label asp-for="Password"></label>
+					<input asp-for="Password" class="validate" />
+					<span asp-validation-for="Password" class="red-text"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 input-field">
+					<label asp-for="RepeatedPassword"></label>
+					<input asp-for="RepeatedPassword" class="validate" />
+					<span asp-validation-for="RepeatedPassword" class="red-text"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<label asp-for="Persistent"></label>
+					<div class="switch">
+						<label>
+							Off
+							<input asp-for="Persistent">
+							<span class="lever"></span>
+							On
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 input-field">
+					<input type="submit" value="Create" class="btn waves-effect waves-light" />
+				</div>
+			</div>
+		</form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

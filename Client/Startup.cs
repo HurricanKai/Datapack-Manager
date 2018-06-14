@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -10,7 +8,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
 
 namespace Client
 {
@@ -51,14 +48,14 @@ namespace Client
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            // Open the Electron-Window here
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions()
+            Task.Run(async () =>
             {
-                WebPreferences = new WebPreferences()
+                var window = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions()
                 {
-                    DevTools = env.IsDevelopment(),
-                }
-            }, "http://localhost:62495/")); //In Release this is different
+                    Show = false,
+                });
+                window.OnReadyToShow += () => window.Show();
+            });
         }
     }
 }
