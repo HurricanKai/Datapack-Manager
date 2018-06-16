@@ -35,11 +35,14 @@
 							}
 					</div>
 				</div>
+				@if (!Model.model.Versions.Count != 0)
+				{
 				<div class="row">
 					<div class="col s12">
 						<a class="btn" asp-action="Download" asp-route-id="@Model.model.Id">Download Latest</a>
 					</div>
 				</div>
+				}
 			</div>
 		</div>
 		<div class="row">
