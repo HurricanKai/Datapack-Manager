@@ -80,6 +80,12 @@ pipeline {
             sh 'sudo cp ./Build/linux.zip /var/aspnetcore/datapackmanager/Client/linux.zip'
           }
         }
+        stage('Copy Server') {
+          steps {
+            sh 'sudo cp -r ./Build/Server/ /var/aspnetcore/datapackmanager'
+            sh 'sudo systemctl restart kestrel-dpmanager'
+          }
+        }
       }
     }
   }
