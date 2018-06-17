@@ -63,5 +63,27 @@ pipeline {
         }
       }
     }
+    stage('Pack Client') {
+      parallel {
+        stage('Pack Client') {
+          steps {
+            dir(path: './Client/bin/desktop/') {
+              archiveArtifacts(artifacts: './win', onlyIfSuccessful: true)
+              archiveArtifacts(artifacts: './osx', onlyIfSuccessful: true)
+              archiveArtifacts(artifacts: './linux', onlyIfSuccessful: true)
+            }
+
+          }
+        }
+        stage('Pack Server') {
+          steps {
+            dir(path: './Build/') {
+              archiveArtifacts(artifacts: './Server', onlyIfSuccessful: true)
+            }
+
+          }
+        }
+      }
+    }
   }
 }
