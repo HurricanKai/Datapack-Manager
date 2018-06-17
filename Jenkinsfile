@@ -7,8 +7,8 @@ pipeline {
           steps {
             sh 'dotnet restore'
             dir(path: './Client/') {
-              sh '''dotnet restore
-&& dotnet electronize init'''
+              sh 'dotnet restore'
+              sh 'dotnet electronize init'
             }
 
             dir(path: './Server/') {
