@@ -7,10 +7,12 @@ pipeline {
           steps {
             sh 'dotnet restore'
             dir(path: './Client/') {
+              sh 'dotnet clean'
               sh 'dotnet restore'
             }
 
             dir(path: './Server/') {
+              sh 'dotnet clean'
               sh 'dotnet restore'
             }
 
