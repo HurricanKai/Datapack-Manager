@@ -21,6 +21,14 @@ pipeline {
             sh 'sudo npm install electron-packager -g'
           }
         }
+        stage('Electronize') {
+          steps {
+            dir(path: './Client/') {
+              sh 'dotnet electronize init'
+            }
+
+          }
+        }
       }
     }
     stage('Build Server') {
