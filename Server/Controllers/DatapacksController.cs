@@ -157,7 +157,7 @@ namespace Server.Controllers
         // GET: Datapacks
         public async Task<IActionResult> Index(string search, int? pageIndex, string SortBy, bool? Descending)
         {
-            var model = await _context.Datapacks.Include(x => x.Votes).Include(x => x.Author).Include(x => x.Tags).ToListAsync();
+            var model = await _context.Datapacks.Include(x => x.Votes).Include(x => x.Viewers).Include(x => x.Author).Include(x => x.Tags).ToListAsync();
             if (!string.IsNullOrEmpty(search))
             {
                 model = model.Where(x => x.Name.Contains(search) || x.Author.UserName == search || x.Tags.Any(x2 => x2.Tag == search)).ToList();
@@ -219,7 +219,7 @@ namespace Server.Controllers
                 return NotFound();
             }
 
-            var datapackModel = await _context.Datapacks.Where(x => x.Id == id).Include(x => x.Votes).Include(x => x.Author).Include(x => x.Versions).Include(x => x.Tags).Include(x => x.Comments).ThenInclude<DatapackModel, DatapackCommentsModel, UserModel>(x => x.Author)
+            var datapackModel = await _context.Datapacks.Where(x => x.Id == id).Include(x => x.Viewers).Include(x => x.Votes).Include(x => x.Author).Include(x => x.Versions).Include(x => x.Tags).Include(x => x.Comments).ThenInclude<DatapackModel, DatapackCommentsModel, UserModel>(x => x.Author)
                 .SingleAsync();
             if (datapackModel == null)
             {
@@ -236,8 +236,12 @@ namespace Server.Controllers
 
         private void Viewed(DatapackModel datapackModel, UserModel currentUser)
         {
-            if (!datapackModel.Viewers.Contains(currentUser))
-                datapackModel.Viewers.Add(currentUser);
+            if (!datapackModel.Viewers.Any(x => x.User.Id == currentUser.Id))
+                datapackModel.Viewers.Add(new ViewerModel()
+                {
+                    User = currentUser,
+                    Datapack = datapackModel
+                });
         }
 
         [HttpPost]
@@ -282,7 +286,7 @@ namespace Server.Controllers
             datapackModel.Downloads = 0;
             datapackModel.Votes = new List<DatapackVoteModel>();
             datapackModel.Versions = new List<DatapackVersionModel>();
-            datapackModel.Viewers = new List<UserModel>();
+            datapackModel.Viewers = new List<ViewerModel>();
             datapackModel.Tags = new List<DatapackTagModel>();
             if (!string.IsNullOrEmpty(Tags))
                 foreach (var v in Tags.Split(","))
