@@ -37,7 +37,7 @@ pipeline {
         stage('Build Client Win') {
           steps {
             dir(path: './Client/') {
-              sh 'dotnet electronize build /target win'
+              sh 'dotnet electronize build /target win -f netcoreapp2.0 -o ../Build/Client/win'
             }
 
           }
@@ -45,7 +45,7 @@ pipeline {
         stage('Build Client Linux') {
           steps {
             dir(path: './Client/') {
-              sh 'dotnet electronize build /target linux'
+              sh 'dotnet electronize build /target linux -f netcoreapp2.0 -o ../Build/Client/linux'
             }
 
           }
@@ -57,7 +57,7 @@ pipeline {
     
     
     
-    dotnet electronize build /target linux'''
+    dotnet electronize build /target osx -f netcoreapp2.0 -o ../Build/Client/osx'''
             }
 
           }
