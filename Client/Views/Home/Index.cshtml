@@ -36,7 +36,7 @@
 							<tbody>
 								@foreach (var datapack in world.Datapacks)
 								{
-									string s = datapack.Enabled ? "<span class=\"text-green\">Enabled</span>" : "<span class=\"text-red\">Disabled</span>";
+									string s = datapack.Enabled ? "<span class=\"green-text\">Enabled</span>" : "<span class=\"red-text\">Disabled</span>";
 									<tr>
 										<td>@datapack.Name</td>
 										<td>@Html.Raw(s)</td>
