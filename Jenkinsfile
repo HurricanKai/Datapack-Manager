@@ -52,19 +52,24 @@ pipeline {
 
       }
     }
-    stage('Pack') {
+    stage('Zip') {
       parallel {
-        stage('Pack Clients') {
+        stage('Zip Clients') {
           steps {
-            archiveArtifacts(artifacts: 'Client/bin/desktop/win/**/*', onlyIfSuccessful: true)
-            archiveArtifacts(artifacts: 'Client/bin/desktop/linux/**/*', onlyIfSuccessful: true)
+            sh 'zip ./Build/win.zip -r ./Client/bin/desktop/ElectronNET.Host-win32-x64'
+            sh 'zip ./Build/linux.zip -r ./Client/bin/desktop/ElectronNET.Host-linux-x64'
           }
         }
-        stage('Pack Server') {
+        stage('Zip Server') {
           steps {
-            archiveArtifacts(artifacts: 'Build/Server/**/*', onlyIfSuccessful: true)
+            sh 'zip ./Builds/Server.zip -r ./Builds/Server/'
           }
         }
+      }
+    }
+    stage('Add Artifacts') {
+      steps {
+        archiveArtifacts(artifacts: 'Build/*.zip', onlyIfSuccessful: true)
       }
     }
   }
