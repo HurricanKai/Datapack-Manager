@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,16 @@ namespace Server.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult DownloadClient(string version)
+        {
+            string path = Path.GetFullPath($"./Client/{version}.zip");
+            var content = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var response = File(content, "application/octet-stream", $"dp_client-{version}.zip");
+            return response;
         }
 
         [HttpPost]
