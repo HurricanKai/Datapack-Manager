@@ -13,6 +13,11 @@ pipeline {
             sh 'sudo npm install electron-packager -g'
           }
         }
+        stage('[REMOVE]') {
+          steps {
+            sh 'whoami'
+          }
+        }
       }
     }
     stage('Build Server') {
