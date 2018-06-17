@@ -5,10 +5,10 @@ pipeline {
       parallel {
         stage('Restore') {
           steps {
+            sh 'dotnet clean'
             sh 'dotnet restore'
             dir(path: './Client/') {
               sh 'dotnet restore'
-              sh 'dotnet electronize init'
             }
 
             dir(path: './Server/') {
@@ -24,7 +24,7 @@ pipeline {
         }
       }
     }
-    stage('Build Server') {
+    stage('Build') {
       parallel {
         stage('Build Server') {
           steps {
@@ -37,29 +37,53 @@ pipeline {
         stage('Build Client Win') {
           steps {
             dir(path: './Client/') {
-              sh 'dotnet electronize build /target win'
+              sh 'dotnet electronize build /target win -f netcoreapp2.0 -o ../Build/Client/win'
             }
 
           }
         }
-        stage('Build Client Linux') {
-          steps {
-            dir(path: './Client/') {
-              sh 'dotnet electronize build /target linux'
-            }
+      }
+    }
+    stage('Build Linux') {
+      steps {
+        dir(path: './Client/') {
+          sh 'dotnet electronize build /target linux -f netcoreapp2.0 -o ../Build/Client/linux'
+        }
 
+      }
+    }
+    stage('Zip') {
+      parallel {
+        stage('Zip Clients') {
+          steps {
+            sh 'zip ./Build/win.zip -r ./Client/bin/desktop/ElectronNET.Host-win32-x64'
+            sh 'zip ./Build/linux.zip -r ./Client/bin/desktop/ElectronNET.Host-linux-x64'
           }
         }
-        stage('Build Client OSX') {
+        stage('Zip Server') {
           steps {
-            dir(path: './Client/') {
-              sh '''
-    
-    
-    
-    dotnet electronize build /target linux'''
-            }
-
+            sh 'zip ./Build/Server.zip -r ./Build/Server/'
+          }
+        }
+      }
+    }
+    stage('Add Artifacts') {
+      parallel {
+        stage('Add Artifacts') {
+          steps {
+            archiveArtifacts(artifacts: 'Build/*.zip', onlyIfSuccessful: true)
+          }
+        }
+        stage('Copy Clients') {
+          steps {
+            sh 'sudo cp ./Build/win.zip /var/aspnetcore/datapackmanager/Client/win.zip'
+            sh 'sudo cp ./Build/linux.zip /var/aspnetcore/datapackmanager/Client/linux.zip'
+          }
+        }
+        stage('Copy Server') {
+          steps {
+            sh 'sudo cp -r ./Build/Server/ /var/aspnetcore/datapackmanager'
+            sh 'sudo systemctl restart kestrel-dpmanager'
           }
         }
       }
