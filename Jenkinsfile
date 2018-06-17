@@ -6,6 +6,14 @@ pipeline {
         stage('Restore') {
           steps {
             sh 'dotnet restore'
+            dir(path: './Client/') {
+              sh 'dotnet restore'
+            }
+
+            dir(path: './Server/') {
+              sh 'dotnet restore'
+            }
+
           }
         }
         stage('Update Electron Packager') {
