@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Update Electron Packager') {
           steps {
-            sh 'npm install electron-packager -g'
+            sh 'sudo npm install electron-packager -g'
           }
         }
       }
