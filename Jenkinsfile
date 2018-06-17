@@ -50,18 +50,6 @@ pipeline {
 
           }
         }
-        stage('Build Client OSX') {
-          steps {
-            dir(path: './Client/') {
-              sh '''
-    
-    
-    
-    dotnet electronize build /target osx -f netcoreapp2.0 -o ../Build/Client/osx'''
-            }
-
-          }
-        }
       }
     }
     stage('Pack Client') {
