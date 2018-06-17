@@ -56,19 +56,14 @@ pipeline {
       parallel {
         stage('Pack Clients') {
           steps {
-            dir(path: './Client/bin/desktop/') {
-              archiveArtifacts(artifacts: 'win', onlyIfSuccessful: true)
-              archiveArtifacts(artifacts: 'linux', onlyIfSuccessful: true)
-            }
-
+            archiveArtifacts(artifacts: './Client/bin/desktop/win/**/*', onlyIfSuccessful: true)
+            archiveArtifacts(artifacts: './Client/bin/desktop/linux/**/*', onlyIfSuccessful: true)
           }
         }
         stage('Pack Server') {
           steps {
-            dir(path: './Build/') {
-              archiveArtifacts(artifacts: 'Server', onlyIfSuccessful: true)
-            }
-
+            archiveArtifacts(artifacts: '/Build/Server/**/*', onlyIfSuccessful: true)
+            dir(path: './Build/')
           }
         }
       }
