@@ -42,7 +42,19 @@ pipeline {
 
           }
         }
-        stage('Build Client Linux') {
+      }
+    }
+    stage('Pack Client') {
+      parallel {
+        stage('Pack Server') {
+          steps {
+            dir(path: './Build/') {
+              archiveArtifacts(artifacts: './Server', onlyIfSuccessful: true)
+            }
+
+          }
+        }
+        stage('Build Linux') {
           steps {
             dir(path: './Client/') {
               sh 'dotnet electronize build /target linux -f netcoreapp2.0 -o ../Build/Client/linux'
@@ -52,26 +64,13 @@ pipeline {
         }
       }
     }
-    stage('Pack Client') {
-      parallel {
-        stage('Pack Client') {
-          steps {
-            dir(path: './Client/bin/desktop/') {
-              archiveArtifacts(artifacts: './win', onlyIfSuccessful: true)
-              archiveArtifacts(artifacts: './osx', onlyIfSuccessful: true)
-              archiveArtifacts(artifacts: './linux', onlyIfSuccessful: true)
-            }
-
-          }
+    stage('Pack Clients') {
+      steps {
+        dir(path: './Client/bin/desktop/') {
+          archiveArtifacts(artifacts: './win', onlyIfSuccessful: true)
+          archiveArtifacts(artifacts: './linux', onlyIfSuccessful: true)
         }
-        stage('Pack Server') {
-          steps {
-            dir(path: './Build/') {
-              archiveArtifacts(artifacts: './Server', onlyIfSuccessful: true)
-            }
 
-          }
-        }
       }
     }
   }
