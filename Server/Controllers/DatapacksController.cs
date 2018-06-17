@@ -236,7 +236,7 @@ namespace Server.Controllers
 
         private void Viewed(DatapackModel datapackModel, UserModel currentUser)
         {
-            if (!datapackModel.Viewers.Any(x => x.User.Id == currentUser.Id))
+            if (currentUser != null && !datapackModel.Viewers.Any(x => x.User.Id == currentUser.Id))
                 datapackModel.Viewers.Add(new ViewerModel()
                 {
                     User = currentUser,
