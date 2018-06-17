@@ -76,8 +76,8 @@ pipeline {
         }
         stage('Copy Clients') {
           steps {
-            sh 'cp ./Build/win.zip /var/aspnetcore/datapackmanager/Client/win.zip'
-            sh 'cp ./Build/linux.zip /var/aspnetcore/datapackmanager/Client/linux.zip'
+            sh 'sudo cp ./Build/win.zip /var/aspnetcore/datapackmanager/Client/win.zip'
+            sh 'sudo cp ./Build/linux.zip /var/aspnetcore/datapackmanager/Client/linux.zip'
           }
         }
       }
