@@ -7,7 +7,8 @@ pipeline {
           steps {
             sh 'dotnet restore'
             dir(path: './Client/') {
-              sh 'dotnet restore'
+              sh '''dotnet restore
+&& dotnet electronize init'''
             }
 
             dir(path: './Server/') {
@@ -19,14 +20,6 @@ pipeline {
         stage('Update Electron Packager') {
           steps {
             sh 'sudo npm install electron-packager -g'
-          }
-        }
-        stage('Electronize') {
-          steps {
-            dir(path: './Client/') {
-              sh 'dotnet electronize init'
-            }
-
           }
         }
       }
