@@ -74,7 +74,7 @@ namespace Server.Controllers
             _context.Update(datapackModel);
             await _context.SaveChangesAsync();
             return response;
-            //return RedirectToAction("Details/" + id);
+            //return RedirectToAction("Details", new { id = id});
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace Server.Controllers
             _context.Add(Release);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", new { id = id });
         }
 
         [HttpGet]
@@ -151,7 +151,7 @@ namespace Server.Controllers
             _context.Update(datapackModel);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", new { id = id});
         }
 
         // GET: Datapacks
@@ -252,7 +252,7 @@ namespace Server.Controllers
                 _context.Update<DatapackModel>(datapackModel);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: Datapacks/Create
@@ -346,7 +346,7 @@ namespace Server.Controllers
             _context.Update(datapackModel);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", new { id = id });
         }
 
         [HttpPost]
@@ -380,7 +380,7 @@ namespace Server.Controllers
             _context.Update(datapackModel);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", new { id = id });
         }
 
         // POST: Datapacks/Edit/5
@@ -423,7 +423,7 @@ namespace Server.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details/" + id);
+                return RedirectToAction("Details", new { id = id });
             }
             else
                 return NoContent();

@@ -130,22 +130,25 @@ namespace Client.Controllers
                 else
                     throw new Exception();
             }
+            else
+            {
+                world.Datapacks.Add(new Datapack()
+                {
+                    Enabled = true,
+                    Name = name
+                });
+                world.LevelData
+                    .Get<NbtCompound>("DataPacks")
+                        .Get<NbtList>("Enabled")
+                            .Add(new NbtString("file/" + name));
+                world.SaveNbt();
+            }
             Directory.Move(root, p);
             try
             {
                 Directory.Delete(tempPath, true);
             }
             catch { }
-            world.Datapacks.Add(new Datapack()
-            {
-                Enabled = true,
-                Name = name
-            });
-            world.LevelData
-                .Get<NbtCompound>("DataPacks")
-                    .Get<NbtList>("Enabled")
-                        .Add(new NbtString("file/" + name));
-            world.SaveNbt();
         }
 
         public async Task<IActionResult> ImportWorlds()
