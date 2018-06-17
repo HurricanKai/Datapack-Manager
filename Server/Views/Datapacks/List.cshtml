@@ -131,7 +131,7 @@
 								<a asp-action="Download" asp-route-id="@datapack.Id">Download</a>
 							</div>
 							<div class="col s3">
-								<span>Made by <a asp-controller="Account" asp-action="Profile" asp-route-id="@datapack.Author.Id">@datapack.Author.UserName</a></span>
+								<span>Made by @datapack.Author.UserName</span>
 							</div>
 							<div class="col s4">
 								<div class="right">Votes: <span class="grey-text text-darken-3">@datapack.LikeDiff</span></div><br />

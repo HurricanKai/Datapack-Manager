@@ -34,8 +34,7 @@ namespace Server
                 .WithOne(x3 => x3.Datapack);
 
                 x.HasOne(x2 => x2.Author)
-                .WithMany(x3 => x3.Datapacks)
-                .IsRequired();
+                .WithMany(x3 => x3.Datapacks);
 
                 x.HasMany(x2 => x2.Comments)
                     .WithOne(x3 => x3.Datapack);
@@ -50,8 +49,7 @@ namespace Server
             modelBuilder.Entity<DatapackCommentsModel>(x =>
             {
                 x.HasOne(x2 => x2.Author)
-                .WithMany(x3 => x3.Comments)
-                .IsRequired();
+                .WithMany(x3 => x3.Comments);
 
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();
@@ -79,16 +77,14 @@ namespace Server
                 .ValueGeneratedOnAdd();
 
                 x.HasOne<DatapackModel>(x2 => x2.Datapack)
-                .WithMany(x3 => x3.Tags)
-                .IsRequired();
+                .WithMany(x3 => x3.Tags);
             });
 
             modelBuilder.Entity<DatapackVoteModel>(x =>
             {
                 x.Property(x2 => x2.Id).ValueGeneratedOnAdd();
                 x.HasOne(x2 => x2.User)
-                .WithMany(x2 => x2.Votes)
-                .IsRequired();
+                .WithMany(x2 => x2.Votes);
                 x.HasOne(x2 => x2.Datapack)
                 .WithMany(x2 => x2.Votes);
             });

@@ -55,8 +55,6 @@
 		<li class="divider"></li>
 		@if (User.Identity.IsAuthenticated)
 		{
-			<li>My Datapacks - TODO</li>
-			<li>My Account Page - TODO</li>
 			<li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
 		}
 		else
@@ -64,11 +62,20 @@
 			<li><a asp-action="Login" asp-controller="Account">Login</a></li>
 			<li><a asp-action="Register" asp-controller="Account">Register</a></li>
 		}
+		<li class="divider"></li>
+		<li>@Html.ActionLink("Browse Datapacks", "Index", "Datapacks")</li>
+		<li>
+			<form action="../Datapacks">
+				<div class="input-field">
+					<input name="search" id="search" type="search" value="@ViewData["filter"]" required>
+					<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+					<i class="material-icons">close</i>
+				</div>
+			</form>
+		</li>
 	</ul>
 
 	<ul id="dropdownProfile" class="dropdown-content">
-		<li>My Datapacks - TODO</li>
-		<li>My Account Page - TODO</li>
 		<li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
 	</ul>
 	<div class="container">
