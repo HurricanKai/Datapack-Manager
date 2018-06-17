@@ -5,14 +5,13 @@ pipeline {
       parallel {
         stage('Restore') {
           steps {
+            sh 'dotnet clean'
             sh 'dotnet restore'
             dir(path: './Client/') {
-              sh 'dotnet clean'
               sh 'dotnet restore'
             }
 
             dir(path: './Server/') {
-              sh 'dotnet clean'
               sh 'dotnet restore'
             }
 
