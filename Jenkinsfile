@@ -62,7 +62,7 @@ pipeline {
         }
         stage('Zip Server') {
           steps {
-            sh 'zip ./Build/Server.zip -r ./Builds/Server/'
+            sh 'zip ./Build/Server.zip -r ./Build/Server/'
           }
         }
       }
