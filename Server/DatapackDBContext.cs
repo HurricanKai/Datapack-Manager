@@ -42,6 +42,9 @@ namespace Server
 
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();
+
+                x.HasMany(x2 => x2.Viewers)
+                .WithOne(x2 => x2.Datapack);
             });
 
             modelBuilder.Entity<DatapackCommentsModel>(x =>
@@ -49,6 +52,15 @@ namespace Server
                 x.HasOne(x2 => x2.Author)
                 .WithMany(x3 => x3.Comments)
                 .IsRequired();
+
+                x.Property(x2 => x2.Id)
+                .ValueGeneratedOnAdd();
+            });
+
+            modelBuilder.Entity<ViewerModel>(x =>
+            {
+                x.HasOne(x2 => x2.User)
+                .WithMany(x3 => x3.Viewed);
 
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();

@@ -24,7 +24,7 @@ namespace Server.Models
         public virtual List<DatapackTagModel> Tags { get; set; }
         public virtual List<DatapackVoteModel> Votes { get; set; }
         public Int32 Downloads { get; set; }
-        public Int32 Views { get; set; }
+        public virtual List<ViewerModel> Viewers { get; set; }
         public Int32 Likes { get { return Votes?.Count(x => x.Value > 0) ?? 0; } }
         public Int32 Dislikes { get { return Votes?.Count(x => x.Value < 0) ?? 0; } }
         public Int32 LikeDiff { get { return Likes - Dislikes; } }

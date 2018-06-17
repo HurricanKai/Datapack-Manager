@@ -189,9 +189,9 @@ namespace Server.Controllers
                     break;
                 case "Views":
                     if (aDescending)
-                        model = model.OrderByDescending(x => x.Views).ToList();
+                        model = model.OrderByDescending(x => x.Viewers.Count).ToList();
                     else
-                        model = model.OrderBy(x => x.Views).ToList();
+                        model = model.OrderBy(x => x.Viewers.Count).ToList();
                     break;
                 case "AZ":
                     if (aDescending)
@@ -228,10 +228,16 @@ namespace Server.Controllers
             datapackModel.Versions = datapackModel.Versions.OrderByDescending(x => x.ReleaseDate).ToList();
             var currentUser = await _userManager.GetUserAsync(User);
             var comments = PaginatedList<DatapackCommentsModel>.Create(datapackModel.Comments, commentPage ?? 1, 10);
-            datapackModel.Views++;
+            Viewed(datapackModel, currentUser);
             var t = _context.Update(datapackModel);
             await _context.SaveChangesAsync();
             return View(new DetailsViewModel() { model = datapackModel, Comments = comments, IsOwner = (currentUser?.Id ?? "") == datapackModel.Author.Id });
+        }
+
+        private void Viewed(DatapackModel datapackModel, UserModel currentUser)
+        {
+            if (!datapackModel.Viewers.Contains(currentUser))
+                datapackModel.Viewers.Add(currentUser);
         }
 
         [HttpPost]
@@ -276,7 +282,7 @@ namespace Server.Controllers
             datapackModel.Downloads = 0;
             datapackModel.Votes = new List<DatapackVoteModel>();
             datapackModel.Versions = new List<DatapackVersionModel>();
-            datapackModel.Views = 0;
+            datapackModel.Viewers = new List<UserModel>();
             datapackModel.Tags = new List<DatapackTagModel>();
             if (!string.IsNullOrEmpty(Tags))
                 foreach (var v in Tags.Split(","))

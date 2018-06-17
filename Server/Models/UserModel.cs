@@ -12,5 +12,6 @@ namespace Server.Models
         public virtual List<DatapackModel> Datapacks { get; set; }
         public virtual List<DatapackCommentsModel> Comments { get; set; }
         public virtual List<DatapackVoteModel> Votes { get; set; }
+        public virtual List<ViewerModel> Viewed { get; set; }
     }
 }
