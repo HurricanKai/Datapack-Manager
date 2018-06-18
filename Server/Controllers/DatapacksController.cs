@@ -446,6 +446,8 @@ namespace Server.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var datapackModel = await _context.Datapacks.Where(x => x.Id == id).Include(x => x.Author).SingleOrDefaultAsync();
+            if (datapackModel == null)
+                return NotFound();
             var user = await _userManager.GetUserAsync(User);
             if (datapackModel.Author != user)
                 return Forbid();

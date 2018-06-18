@@ -49,7 +49,8 @@ namespace Server
             modelBuilder.Entity<DatapackCommentsModel>(x =>
             {
                 x.HasOne(x2 => x2.Author)
-                .WithMany(x3 => x3.Comments);
+                .WithMany(x3 => x3.Comments)
+                .IsRequired();
 
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();
@@ -60,6 +61,8 @@ namespace Server
                 x.HasOne(x2 => x2.User)
                 .WithMany(x3 => x3.Viewed);
 
+                x.Property(x2 => x2.Datapack).IsRequired();
+
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();
             });
@@ -69,6 +72,7 @@ namespace Server
                 x.Property(x2 => x2.Id)
                 .ValueGeneratedOnAdd();
                 x.HasIndex(x2 => x2.Name).IsUnique();
+                x.Property(x2 => x2.Datapack).IsRequired();
             });
 
             modelBuilder.Entity<DatapackTagModel>(x =>
@@ -82,6 +86,7 @@ namespace Server
 
             modelBuilder.Entity<DatapackVoteModel>(x =>
             {
+                x.Property(x2 => x2.Datapack).IsRequired();
                 x.Property(x2 => x2.Id).ValueGeneratedOnAdd();
                 x.HasOne(x2 => x2.User)
                 .WithMany(x2 => x2.Votes);
